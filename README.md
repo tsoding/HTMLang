@@ -2,7 +2,7 @@
 
 HTML as a Programming Language. Finally all of your dreams came true.
 
-## Usage
+## Hello, World
 
 ```html
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ HTML as a Programming Language. Finally all of your dreams came true.
   </head>
   <body>
     <htmlang>
-      <print message="'Hello, World'"></print>
+      <print><string>Hello, World</string></print>
     </htmlang>
     <script src="./HTMLang.js"></script>
   </body>
