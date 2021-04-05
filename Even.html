@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Even</title>
+  </head>
+  <body>
+    <htmlang style="display: none;">
+      <for var='i' from='1' to='100'>
+        <cond>
+          <when>
+            <equals>
+              <mod>
+                <var>i</var>
+                <number>2</number>
+              </mod>
+              <number>0</number>
+            </equals>
+            <print><var>i</var></print>
+          </when>
+        </cond>
+      </for>
+    </htmlang>
+    <script src='HTMLang.js'></script>
+  </body>
+</html>
