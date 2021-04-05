@@ -5,25 +5,61 @@
   </head>
   <body>
     <h3>Look into the DevTools Console</h3>
-    <htmlang>
-      <print message="'Generating FizzBuzz...'"></print>
+    <htmlang style="display: none;">
+      <print><string>Generating FizzBuzz...</string></print>
       <for var="i" from="1" to="100">
         <switch>
-          <case condition="this.i % 15 === 0">
-            <print message="'FizzBuzz'"></print>
+          <case>
+            <when>
+              <equals>
+                <mod>
+                  <var>i</var>
+                  <number>15</number>
+                </mod>
+                <number>0</number>
+              </equals>
+              <print>
+                <string>FizzBuzz</string>
+              </print>
+            </when>
           </case>
-          <case condition="this.i % 3 === 0">
-            <print message="'Fizz'"></print>
+
+          <case>
+            <when>
+              <equals>
+                <mod>
+                  <var>i</var>
+                  <number>3</number>
+                </mod>
+                <number>0</number>
+              </equals>
+            </when>
+            <print>
+              <string>Fizz</string>
+            </print>
           </case>
-          <case condition="this.i % 5 === 0">
-            <print message="'Buzz'"></print>
+
+          <case>
+            <when>
+              <equals>
+                <mod>
+                  <var>i</var>
+                  <number>5</number>
+                </mod>
+                <number>0</number>
+              </equals>
+            </when>
+            <print>
+              <string>Buzz</string>
+            </print>
           </case>
+
           <default>
-            <print message="this.i"></print>
+            <print><var>i</var></print>
           </default>
         </switch>
       </for>
     </htmlang>
-    <script src="./htmlang.js"></script>
+    <script src="./HTMLang.js"></script>
   </body>
 </html>

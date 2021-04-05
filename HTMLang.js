@@ -17,12 +17,16 @@ function evalNode(node, scope = {}) {
         for (let switchChild of node.children) {
             switch (switchChild.tagName) {
             case 'CASE': {
-                const caseCondition = switchChild.attributes['condition'].value;
-                if (eval(caseCondition)) {
-                    for (let caseChild of switchChild.children) {
-                        evalNode.bind(this)(caseChild);
+                if (switchChild.children[0].tagName === 'WHEN') {
+                    const when = switchChild.children[0];
+                    if (evalNode.bind(this)(when.children[0])) {
+                        for (let i = 1; i < switchChild.children.length; ++i) {
+                            evalNode.bind(this)(switchChild.children[i]);
+                        }
+                        return undefined;
                     }
-                    return;
+                } else {
+                    throw 'The first child of \'case\' must be \'when\'';
                 }
             } break;
 
@@ -30,7 +34,7 @@ function evalNode(node, scope = {}) {
                 for (let defaultChild of switchChild.children) {
                     evalNode.bind(this)(defaultChild);
                 }
-                return;
+                return undefined;
             } break;
 
             default: {
@@ -41,13 +45,53 @@ function evalNode(node, scope = {}) {
     } break;
 
     case 'PRINT': {
-        console.log(eval(node.attributes['message'].value));
+        console.log(evalNode.bind(this)(node.children[0]));
     } break;
 
     case 'HTMLANG': {
-        console.log(node);
         for (let htmlangChild of node.children) {
             evalNode.bind(this)(htmlangChild);
+        }
+    } break;
+
+    case 'STRING': {
+        return node.innerText;
+    } break;
+
+    case 'NUMBER': {
+        return parseInt(node.innerText);
+    } break;
+
+    case 'VAR': {
+        return this[node.innerText];
+    } break;
+
+    case 'EQUALS': {
+        if (node.children.length > 0) {
+            const x = evalNode.bind(this)(node.children[0]);
+            for (let i = 1; i < node.children.length; ++i) {
+                if (x !== evalNode.bind(this)(node.children[i])) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else {
+            throw '<equals> requires at least one argument';
+        }
+    } break;
+
+    case 'MOD': {
+        if (node.children.length > 0)  {
+            let result = evalNode.bind(this)(node.children[0]);
+
+            for (let i = 1; i < node.children.length; ++i) {
+                result = result % evalNode.bind(this)(node.children[i]);
+            }
+
+            return result;
+        } else {
+            throw '<mod> requires at least one argument';
         }
     } break;
 
