@@ -13,24 +13,23 @@ function evalNode(node, scope = {}) {
         }
     } break;
 
-    case 'SWITCH': {
+    case 'COND': {
         for (let switchChild of node.children) {
             switch (switchChild.tagName) {
-            case 'CASE': {
-                if (switchChild.children[0].tagName === 'WHEN') {
-                    const when = switchChild.children[0];
-                    if (evalNode.bind(this)(when.children[0])) {
+            case 'WHEN': {
+                if (switchChild.children.length > 0) {
+                    if (evalNode.bind(this)(switchChild.children[0])) {
                         for (let i = 1; i < switchChild.children.length; ++i) {
                             evalNode.bind(this)(switchChild.children[i]);
                         }
                         return undefined;
                     }
                 } else {
-                    throw 'The first child of \'case\' must be \'when\'';
+                    throw '<case> requires at least one argument. The first argument is expected to be the condition';
                 }
             } break;
 
-            case 'DEFAULT': {
+            case 'ELSE': {
                 for (let defaultChild of switchChild.children) {
                     evalNode.bind(this)(defaultChild);
                 }
@@ -49,6 +48,12 @@ function evalNode(node, scope = {}) {
     } break;
 
     case 'HTMLANG': {
+        for (let htmlangChild of node.children) {
+            evalNode.bind(this)(htmlangChild);
+        }
+    } break;
+
+    case 'BLOCK': {
         for (let htmlangChild of node.children) {
             evalNode.bind(this)(htmlangChild);
         }

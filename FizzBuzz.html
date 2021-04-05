@@ -8,56 +8,47 @@
     <htmlang style="display: none;">
       <print><string>Generating FizzBuzz...</string></print>
       <for var="i" from="1" to="100">
-        <switch>
-          <case>
-            <when>
-              <equals>
-                <mod>
-                  <var>i</var>
-                  <number>15</number>
-                </mod>
-                <number>0</number>
-              </equals>
-              <print>
-                <string>FizzBuzz</string>
-              </print>
-            </when>
-          </case>
-
-          <case>
-            <when>
-              <equals>
-                <mod>
-                  <var>i</var>
-                  <number>3</number>
-                </mod>
-                <number>0</number>
-              </equals>
-            </when>
+        <cond>
+          <when>
+            <equals>
+              <mod>
+                <var>i</var>
+                <number>15</number>
+              </mod>
+              <number>0</number>
+            </equals>
+            <print>
+              <string>FizzBuzz</string>
+            </print>
+          </when>
+          <when>
+            <equals>
+              <mod>
+                <var>i</var>
+                <number>3</number>
+              </mod>
+              <number>0</number>
+            </equals>
             <print>
               <string>Fizz</string>
             </print>
-          </case>
-
-          <case>
-            <when>
-              <equals>
-                <mod>
-                  <var>i</var>
-                  <number>5</number>
-                </mod>
-                <number>0</number>
-              </equals>
-            </when>
+          </when>
+          <when>
+            <equals>
+              <mod>
+                <var>i</var>
+                <number>5</number>
+              </mod>
+              <number>0</number>
+            </equals>
             <print>
               <string>Buzz</string>
             </print>
-          </case>
-
-          <default>
+          </when>
+          <else>
             <print><var>i</var></print>
-          </default>
-        </switch>
+          </else>
+        </cond>
       </for>
     </htmlang>
     <script src="./HTMLang.js"></script>
