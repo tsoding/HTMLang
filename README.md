@@ -14,7 +14,7 @@ HTML as a Programming Language. Finally all of your dreams came true.
     <htmlang>
       <print message="'Hello, World'"></print>
     </htmlang>
-    <script src="./htmlang.js"></script>
+    <script src="./HTMLang.js"></script>
   </body>
 </html>
 ```
