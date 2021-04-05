@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FizzBuzz</title>
+  </head>
+  <body>
+    <h3>Look into the DevTools Console</h3>
+    <htmlang>
+      <print message="'Generating FizzBuzz...'"></print>
+      <for var="i" from="1" to="100">
+        <switch>
+          <case condition="this.i % 15 === 0">
+            <print message="'FizzBuzz'"></print>
+          </case>
+          <case condition="this.i % 3 === 0">
+            <print message="'Fizz'"></print>
+          </case>
+          <case condition="this.i % 5 === 0">
+            <print message="'Buzz'"></print>
+          </case>
+          <default>
+            <print message="this.i"></print>
+          </default>
+        </switch>
+      </for>
+    </htmlang>
+    <script src="./htmlang.js"></script>
+  </body>
+</html>
