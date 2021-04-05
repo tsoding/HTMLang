@@ -1,16 +1,39 @@
-function evalNode(node, scope = {}) {
+"use strict";
+
+function newScope(scope) {
+    return {
+        names: {},
+        prev: scope,
+    };
+}
+
+function popScope(scope) {
+    return scope.prev;
+}
+
+function scopeLookup(scope, name) {
+    while (scope && scope.names) {
+        if (name in scope.names) {
+            return scope.names[name];
+        }
+        scope = scope.prev;
+    }
+}
+
+function evalNode(node, scope=newScope()) {
     switch (node.tagName) {
     case 'FOR': {
         const fromValue = parseInt(node.attributes['from'].value);
         const toValue = parseInt(node.attributes['to'].value);
         const varName = node.attributes['var'].value;
-        for (let i = fromValue; i <= toValue; ++i) {
-            let context = {};
-            context[varName] = i;
+        scope = newScope(scope);
+        for (let varValue = fromValue; varValue <= toValue; ++varValue) {
+            scope.names[varName] = varValue;
             for (let forChild of node.children) {
-                evalNode.bind(context)(forChild);
+                evalNode(forChild, scope);
             }
         }
+        scope = popScope(scope);
     } break;
 
     case 'COND': {
@@ -18,9 +41,9 @@ function evalNode(node, scope = {}) {
             switch (switchChild.tagName) {
             case 'WHEN': {
                 if (switchChild.children.length > 0) {
-                    if (evalNode.bind(this)(switchChild.children[0])) {
-                        for (let i = 1; i < switchChild.children.length; ++i) {
-                            evalNode.bind(this)(switchChild.children[i]);
+                    if (evalNode(switchChild.children[0], scope)) {
+                        for (let whenChild of Array.from(switchChild.children).slice(1)) {
+                            evalNode(whenChild, scope);
                         }
                         return undefined;
                     }
@@ -31,10 +54,10 @@ function evalNode(node, scope = {}) {
 
             case 'ELSE': {
                 for (let defaultChild of switchChild.children) {
-                    evalNode.bind(this)(defaultChild);
+                    evalNode(defaultChild, scope);
                 }
                 return undefined;
-            } break;
+            }
 
             default: {
                 throw `Unsupported tag ${switchChild.tagName} inside of a switch construct`;
@@ -44,38 +67,38 @@ function evalNode(node, scope = {}) {
     } break;
 
     case 'PRINT': {
-        console.log(evalNode.bind(this)(node.children[0]));
+        console.log(evalNode(node.children[0], scope));
     } break;
 
     case 'HTMLANG': {
         for (let htmlangChild of node.children) {
-            evalNode.bind(this)(htmlangChild);
+            evalNode(htmlangChild, scope);
         }
     } break;
 
     case 'BLOCK': {
-        for (let htmlangChild of node.children) {
-            evalNode.bind(this)(htmlangChild);
+        for (let blockChild of node.children) {
+            evalNode(blockChild, scope);
         }
     } break;
 
     case 'STRING': {
         return node.innerText;
-    } break;
+    }
 
     case 'NUMBER': {
         return parseInt(node.innerText);
-    } break;
+    }
 
     case 'VAR': {
-        return this[node.innerText];
-    } break;
+        return scopeLookup(scope, node.innerText);
+    }
 
     case 'EQUALS': {
         if (node.children.length > 0) {
-            const x = evalNode.bind(this)(node.children[0]);
-            for (let i = 1; i < node.children.length; ++i) {
-                if (x !== evalNode.bind(this)(node.children[i])) {
+            const x = evalNode(node.children[0], scope);
+            for (let equalsArg of Array.from(node.children).slice(1)) {
+                if (x !== evalNode(equalsArg, scope)) {
                     return false;
                 }
             }
@@ -84,27 +107,29 @@ function evalNode(node, scope = {}) {
         } else {
             throw '<equals> requires at least one argument';
         }
-    } break;
+    }
 
     case 'MOD': {
         if (node.children.length > 0)  {
-            let result = evalNode.bind(this)(node.children[0]);
+            let result = evalNode(node.children[0], scope);
 
-            for (let i = 1; i < node.children.length; ++i) {
-                result = result % evalNode.bind(this)(node.children[i]);
+            for (let modArg of Array.from(node.children).slice(1)) {
+                result = result % evalNode(modArg, scope);
             }
 
             return result;
         } else {
             throw '<mod> requires at least one argument';
         }
-    } break;
+    }
 
     default:
         throw `Unknown node '${node.tagName}'`;
     }
 }
 
-for (let htmlang of document.querySelectorAll("htmlang")) {
-    evalNode(htmlang);
-}
+(() => {
+    for (let htmlang of document.querySelectorAll("htmlang")) {
+        evalNode(htmlang);
+    }
+})();
