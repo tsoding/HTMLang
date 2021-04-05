@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fibonacci</title>
+  </head>
+  <body>
+    <htmlang style="display: none;">
+      <let name="a"><number>0</number></let>
+      <let name="b"><number>1</number></let>
+      <for var="i" from="1" to="30">
+        <print><var>a</var></print>
+        <let name="c">
+          <plus>
+            <var>a</var>
+            <var>b</var>
+          </plus>
+        </let>
+        <set name="a"><var>b</var></set>
+        <set name="b"><var>c</var></set>
+      </for>
+    </htmlang>
+    <script src="./HTMLang.js"></script>
+  </body>
+</html>

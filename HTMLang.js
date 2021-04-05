@@ -14,7 +14,7 @@ function popScope(scope) {
 function scopeLookup(scope, name) {
     while (scope && scope.names) {
         if (name in scope.names) {
-            return scope.names[name];
+            return scope;
         }
         scope = scope.prev;
     }
@@ -22,6 +22,21 @@ function scopeLookup(scope, name) {
 
 function evalNode(node, scope=newScope()) {
     switch (node.tagName) {
+    case 'LET': {
+        let varName = node.attributes['name'].value;
+        scope.names[varName] = evalNode(node.children[0], scope);
+    } break;
+
+    case 'SET': {
+        let varName = node.attributes['name'].value;
+        let s = scopeLookup(scope, varName);
+        if (s) {
+            s.names[varName] = evalNode(node.children[0], scope);
+        } else {
+            throw `Could not assign variable ${varName} because it was not defined`;
+        }
+    } break;
+
     case 'FOR': {
         const fromValue = parseInt(node.attributes['from'].value);
         const toValue = parseInt(node.attributes['to'].value);
@@ -91,7 +106,8 @@ function evalNode(node, scope=newScope()) {
     }
 
     case 'VAR': {
-        return scopeLookup(scope, node.innerText);
+        let s = scopeLookup(scope, node.innerText);
+        return s ? s.names[node.innerText] : undefined;
     }
 
     case 'EQUALS': {
@@ -107,6 +123,14 @@ function evalNode(node, scope=newScope()) {
         } else {
             throw '<equals> requires at least one argument';
         }
+    }
+
+    case 'PLUS': {
+        let result = 0;
+        for (let plusArg of node.children) {
+            result += evalNode(plusArg, scope);
+        }
+        return result;
     }
 
     case 'MOD': {
