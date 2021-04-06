@@ -6,7 +6,7 @@
   <body>
     <h3>Look into the DevTools Console</h3>
     <htmlang style="display: none;">
-      <print><s>Generating FizzBuzz...</s></print>
+      <call target="console.log"><s>Generating FizzBuzz...</s></call>
       <for><v>i</v> <n>1</n> <n>100</n>
         <cond>
           <when>
@@ -17,9 +17,9 @@
               </mod>
               <n>0</n>
             </eq>
-            <print>
+            <call target="console.log">
               <s>FizzBuzz</s>
-            </print>
+            </call>
           </when>
           <when>
             <eq>
@@ -29,9 +29,9 @@
               </mod>
               <n>0</n>
             </eq>
-            <print>
+            <call target="console.log">
               <s>Fizz</s>
-            </print>
+            </call>
           </when>
           <when>
             <eq>
@@ -41,12 +41,12 @@
               </mod>
               <n>0</n>
             </eq>
-            <print>
+            <call target="console.log">
               <s>Buzz</s>
-            </print>
+            </call>
           </when>
           <else>
-            <print><v>i</v></print>
+            <call target="console.log"><v>i</v></call>
           </else>
         </cond>
       </for>

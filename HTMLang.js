@@ -105,10 +105,6 @@ function evalNode(node, scope=newScope()) {
         }
     } break;
 
-    case 'PRINT': {
-        console.log(evalNode(node.children[0], scope));
-    } break;
-
     case 'HTMLANG': {
         for (let htmlangChild of node.children) {
             evalNode(htmlangChild, scope);
@@ -168,6 +164,24 @@ function evalNode(node, scope=newScope()) {
             return result;
         } else {
             throw '<mod> requires at least one argument';
+        }
+    }
+
+    case 'CALL': {
+        let args = Array.from(node.children).map((child) => evalNode(child, scope));
+
+        let target = window;
+        let parts = node.attributes['target'].value.split('.');
+        for (let i = 0; i < parts.length; ++i) {
+            if (target[parts[i]] === undefined) {
+                throw `Could not find ${node.attributes['target'].value}`;
+            }
+
+            if (i === parts.length - 1) {
+                return target[parts[i]].bind(target)(...args);
+            }
+
+            target = target[parts[i]];
         }
     }
 
