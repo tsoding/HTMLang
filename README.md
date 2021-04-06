@@ -2,6 +2,8 @@
 
 HTML as a Programming Language. Finally all of your dreams came true.
 
+*They were laughing that HTML was not a real programming language... WHO"S LAUGHING NOW!!11*
+
 ## Hello, World
 
 ```html
