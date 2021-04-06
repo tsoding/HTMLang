@@ -6,18 +6,25 @@
   <body>
     <htmlang style="display: none;">
       <print><s>Generating Fibonacci Numbers...</s></print>
-      <let name="a"><n>0</n></let>
-      <let name="b"><n>1</n></let>
-      <for var="i" from="1" to="30">
+      <let>
+        <v>a</v>
+        <n>0</n>
+      </let>
+      <let>
+        <v>b</v>
+        <n>1</n>
+      </let>
+      <for> <v>i</v> <n>1</n> <n>30</n>
         <print><v>a</v></print>
-        <let name="c">
+        <let>
+          <v>c</v>
           <sum>
             <v>a</v>
             <v>b</v>
           </sum>
         </let>
-        <set name="a"><v>b</v></set>
-        <set name="b"><v>c</v></set>
+        <set><v>a</v><v>b</v></set>
+        <set><v>b</v><v>c</v></set>
       </for>
     </htmlang>
     <script src="./HTMLang.js"></script>

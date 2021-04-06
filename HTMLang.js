@@ -23,29 +23,53 @@ function scopeLookup(scope, name) {
 function evalNode(node, scope=newScope()) {
     switch (node.tagName) {
     case 'LET': {
-        let varName = node.attributes['name'].value;
-        scope.names[varName] = evalNode(node.children[0], scope);
+        if (node.children.length < 2) {
+            throw '<let> expects at least two arguments: <let><v/><e/></let>';
+        }
+
+        if (node.children[0].tagName !== 'V') {
+            throw 'first argument of <let> is expected to be <v>';
+        }
+
+        let varName = node.children[0].innerHTML.trim();
+        scope.names[varName] = evalNode(node.children[1], scope);
     } break;
 
     case 'SET': {
-        let varName = node.attributes['name'].value;
+        if (node.children.length < 2) {
+            throw '<set> expects at least two argument: <set><v/><e/></set>';
+        }
+
+        if (node.children[0].tagName != 'V') {
+            throw 'first argument of <set> is expected to be <v>';
+        }
+
+        let varName = node.children[0].innerHTML.trim();
         let s = scopeLookup(scope, varName);
         if (s) {
-            s.names[varName] = evalNode(node.children[0], scope);
+            s.names[varName] = evalNode(node.children[1], scope);
         } else {
-            throw `Could not assign variable ${varName} because it was not defined`;
+            throw `<set> could not assign variable ${varName} because it was not defined in this scope`;
         }
     } break;
 
     case 'FOR': {
-        const fromValue = parseInt(node.attributes['from'].value);
-        const toValue = parseInt(node.attributes['to'].value);
-        const varName = node.attributes['var'].value;
+        if (node.children.length < 3) {
+            throw '<for> expects at least 3 arguments: <for><v/><e/><e/> ... </for>';
+        }
+
+        if (node.children[0].tagName === 'v') {
+            throw 'first argument of <for> is expected to be <v>';
+        }
+
+        const varName = node.children[0].innerHTML.trim();
+        const fromValue = evalNode(node.children[1], scope);
+        const toValue = evalNode(node.children[2], scope);
         scope = newScope(scope);
         for (let varValue = fromValue; varValue <= toValue; ++varValue) {
             scope.names[varName] = varValue;
-            for (let forChild of node.children) {
-                evalNode(forChild, scope);
+            for (let i = 3; i < node.children.length; ++i) {
+                evalNode(node.children[i], scope);
             }
         }
         scope = popScope(scope);
