@@ -82,7 +82,11 @@ function evalNode(node, scope=newScope()) {
     } break;
 
     case 'PRINT': {
-        console.log(evalNode(node.children[0], scope));
+    	let total = "";
+    	for(let child of node.children){
+    		total += evalNode(child,scope);
+    	}
+        console.log(total);
     } break;
 
     case 'HTMLANG': {
