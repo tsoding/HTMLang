@@ -12,7 +12,7 @@ HTML as a Programming Language. Finally all of your dreams came true.
   </head>
   <body>
     <htmlang>
-      <print><string>Hello, World</string></print>
+      <print><s>Hello, World</s></print>
     </htmlang>
     <script src="./HTMLang.js"></script>
   </body>

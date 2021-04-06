@@ -97,20 +97,20 @@ function evalNode(node, scope=newScope()) {
         }
     } break;
 
-    case 'STRING': {
+    case 'S': {
         return node.innerText;
     }
 
-    case 'NUMBER': {
+    case 'N': {
         return parseInt(node.innerText);
     }
 
-    case 'VAR': {
+    case 'V': {
         let s = scopeLookup(scope, node.innerText);
         return s ? s.names[node.innerText] : undefined;
     }
 
-    case 'EQUALS': {
+    case 'EQ': {
         if (node.children.length > 0) {
             const x = evalNode(node.children[0], scope);
             for (let equalsArg of Array.from(node.children).slice(1)) {
@@ -125,7 +125,7 @@ function evalNode(node, scope=newScope()) {
         }
     }
 
-    case 'PLUS': {
+    case 'SUM': {
         let result = 0;
         for (let plusArg of node.children) {
             result += evalNode(plusArg, scope);

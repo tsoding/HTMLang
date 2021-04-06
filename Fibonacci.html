@@ -5,18 +5,19 @@
   </head>
   <body>
     <htmlang style="display: none;">
-      <let name="a"><number>0</number></let>
-      <let name="b"><number>1</number></let>
+      <print><s>Generating Fibonacci Numbers...</s></print>
+      <let name="a"><n>0</n></let>
+      <let name="b"><n>1</n></let>
       <for var="i" from="1" to="30">
-        <print><var>a</var></print>
+        <print><v>a</v></print>
         <let name="c">
-          <plus>
-            <var>a</var>
-            <var>b</var>
-          </plus>
+          <sum>
+            <v>a</v>
+            <v>b</v>
+          </sum>
         </let>
-        <set name="a"><var>b</var></set>
-        <set name="b"><var>c</var></set>
+        <set name="a"><v>b</v></set>
+        <set name="b"><v>c</v></set>
       </for>
     </htmlang>
     <script src="./HTMLang.js"></script>

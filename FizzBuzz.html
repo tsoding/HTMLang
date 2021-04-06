@@ -6,47 +6,47 @@
   <body>
     <h3>Look into the DevTools Console</h3>
     <htmlang style="display: none;">
-      <print><string>Generating FizzBuzz...</string></print>
+      <print><s>Generating FizzBuzz...</s></print>
       <for var="i" from="1" to="100">
         <cond>
           <when>
-            <equals>
+            <eq>
               <mod>
-                <var>i</var>
-                <number>15</number>
+                <v>i</v>
+                <n>15</n>
               </mod>
-              <number>0</number>
-            </equals>
+              <n>0</n>
+            </eq>
             <print>
-              <string>FizzBuzz</string>
+              <s>FizzBuzz</s>
             </print>
           </when>
           <when>
-            <equals>
+            <eq>
               <mod>
-                <var>i</var>
-                <number>3</number>
+                <v>i</v>
+                <n>3</n>
               </mod>
-              <number>0</number>
-            </equals>
+              <n>0</n>
+            </eq>
             <print>
-              <string>Fizz</string>
+              <s>Fizz</s>
             </print>
           </when>
           <when>
-            <equals>
+            <eq>
               <mod>
-                <var>i</var>
-                <number>5</number>
+                <v>i</v>
+                <n>5</n>
               </mod>
-              <number>0</number>
-            </equals>
+              <n>0</n>
+            </eq>
             <print>
-              <string>Buzz</string>
+              <s>Buzz</s>
             </print>
           </when>
           <else>
-            <print><var>i</var></print>
+            <print><v>i</v></print>
           </else>
         </cond>
       </for>
