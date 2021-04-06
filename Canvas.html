@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Canvas</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <htmlang style="display:none;">
+      <let>
+        <v>c</v>
+        <call target="document.getElementById">
+          <s>myCanvas</s>
+        </call>
+      </let>
+      <let>
+        <v>ctx</v>
+        <call target="c.getContext">
+          <s>2d</s>
+        </call>
+      </let>
+
+      <call target="ctx.moveTo">
+        <n>0</n>
+        <n>0</n>
+      </call>
+      <call target="ctx.lineTo">
+        <v>c.width</v>
+        <v>c.height</v>
+      </call>
+      <call target="ctx.stroke"></call>
+
+      <call target="ctx.moveTo">
+        <n>0</n>
+        <v>c.height</v>
+      </call>
+      <call target="ctx.lineTo">
+        <v>c.width</v>
+        <n>0</n>
+      </call>
+      <call target="ctx.stroke"></call>
+
+      <call target="ctx.fillText">
+        <s>Hello World</s>
+        <n>10</n>
+        <n>50</n>
+      </call>
+    </htmlang>
+    <script src="./HTMLang.js"></script>
+  </body>
+</html>

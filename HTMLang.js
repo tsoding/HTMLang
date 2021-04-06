@@ -126,8 +126,22 @@ function evalNode(node, scope=newScope()) {
     }
 
     case 'V': {
-        let s = scopeLookup(scope, node.innerText);
-        return s ? s.names[node.innerText] : undefined;
+        let parts = node.innerText.split('.');
+        let s = scopeLookup(scope, parts[0]);
+        if (s) {
+            let target = s.names[parts[0]];
+            parts = parts.slice(1);
+
+            for (let i = 0; i < parts.length; ++i) {
+                if (target[parts[i]] === undefined) {
+                    throw `Could not find ${node.innerText}`;
+                }
+                target = target[parts[i]];
+            }
+
+            return target;
+        }
+        return undefined;
     }
 
     case 'EQ': {
@@ -169,9 +183,15 @@ function evalNode(node, scope=newScope()) {
 
     case 'CALL': {
         let args = Array.from(node.children).map((child) => evalNode(child, scope));
+        let parts = node.attributes['target'].value.split('.');
 
         let target = window;
-        let parts = node.attributes['target'].value.split('.');
+        let s = scopeLookup(scope, parts[0]);
+        if (s) {
+            target = s.names[parts[0]];
+            parts = parts.slice(1);
+        }
+
         for (let i = 0; i < parts.length; ++i) {
             if (target[parts[i]] === undefined) {
                 throw `Could not find ${node.attributes['target'].value}`;
